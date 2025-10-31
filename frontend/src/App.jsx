@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
+import { addTodo } from './api'
 
 function App() {
   const [todos, setTodos] = useState([])
   const [input, setInput] = useState('')
 
-  const addTodo = (e) => {
-    e.preventDefault()
-    if (input.trim() === '') return
-    
-    setTodos([...todos, {
-      id: Date.now(),
-      text: input,
-      completed: false
-    }])
-    setInput('')
+  const handleTodoAdd = async (e) => {
+    try {
+      e.preventDefault()
+      if (input.trim() === '') return
+      const response = await addTodo(input);
+      setInput('')
+    } catch (error) {
+      console.error("Error adding todo:", error)
+    }
   }
 
   const toggleTodo = (id) => {
@@ -31,7 +31,7 @@ function App() {
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Todo List</h1>
         
-        <form onSubmit={addTodo} className="mb-6">
+        <form onSubmit={handleTodoAdd} className="mb-6">
           <div className="flex gap-2">
             <input
               type="text"
