@@ -11,4 +11,13 @@ const addTodo = async (todo) => {
     }
 };
 
-export { addTodo };
+const getTodos = async (todo) => {
+    try {
+        const response = await axios.get(`${baseUrl}/todos`);
+        return response.data;
+    } catch (error) {
+        console.error("Error adding todo:", error);
+        throw error;
+    }
+};
+export { addTodo ,getTodos};
