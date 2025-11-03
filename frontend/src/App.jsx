@@ -1,9 +1,25 @@
-import React, { useState } from 'react'
-import { addTodo } from './api'
+import React, { useEffect, useState } from 'react'
+import { addTodo,getTodos } from './api'
+
+
 
 function App() {
   const [todos, setTodos] = useState([])
   const [input, setInput] = useState('')
+
+  async function getData (){
+    const data = await getTodos();
+    setTodos(data)
+  
+  }
+  
+
+useEffect(()=>{
+  
+  getData()
+  },[]);
+
+  
 
   const handleTodoAdd = async (e) => {
     try {
@@ -11,6 +27,7 @@ function App() {
       if (input.trim() === '') return
       const response = await addTodo(input);
       setInput('')
+      getData()
     } catch (error) {
       console.error("Error adding todo:", error)
     }
@@ -25,6 +42,7 @@ function App() {
   const deleteTodo = (id) => {
     setTodos(todos.filter(todo => todo.id !== id))
   }
+
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">
